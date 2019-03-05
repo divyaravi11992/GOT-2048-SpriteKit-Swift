@@ -398,7 +398,7 @@ class Grid: BoxDelegate {
         for y in 0 ..< boxArray.count {
             
             for x in 0 ..< boxArray[y].count {
-                
+                 
                 if let box: Box = boxArray[x][y] {
                     
                     box.setupWalls()
@@ -407,30 +407,4 @@ class Grid: BoxDelegate {
         }
     }
     
-    func printBoxArray() {
-        
-        for y in 0 ..< boxArray.count {
-        
-            for x in 0 ..< boxArray[y].count {
-                
-                print("-", separator: "", terminator: " ")
-                
-                if let box = boxArray[x][y] {
-                
-                    print(box.number, separator: "", terminator: " ")
-                    
-                } else {
-                    
-                    print("x", separator: "", terminator: " ")
-                }
-            }
-            
-            print("-", separator: "", terminator: " ")
-            
-            print("\n")
-        }
-        
-        print("\n")
-        print("\n")
-    }
 }

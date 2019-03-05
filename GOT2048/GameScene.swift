@@ -11,7 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene, GridDelegate {
 
-    let kBlockSize: CGFloat = 180.0
+    let kBlockSize: CGFloat = 150.0
     let kNumberOfRows: Int = 4
     let kNumberOfColumns: Int = 4
     let kAnimationDuration = 0.3
@@ -92,7 +92,6 @@ class GameScene: SKScene, GridDelegate {
         let boxNode: BoxNode = BoxNode(blockSize: 0)
         boxNode.position = gridView!.gridPosition(row: box.y, col: box.x)
         
-        boxNode.texture = SKTexture.init(imageNamed: ImageAssociation.getImageValue(value: box.number))
         gridView?.addChild(boxNode)
         
         boxNodeArray[box.x][box.y] = boxNode
@@ -100,6 +99,8 @@ class GameScene: SKScene, GridDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + kAnimationDuration) {
             
             boxNode.run(SKAction.resize(toWidth: self.kBlockSize, height: self.kBlockSize, duration: self.kAnimationDuration), completion: {
+                
+                boxNode.texture = SKTexture.init(imageNamed: ImageAssociation.getImageValue(value: box.number))
             })
         }
     }
@@ -123,13 +124,15 @@ class GameScene: SKScene, GridDelegate {
         
         let secondBoxNode: BoxNode = boxNodeArray[secondBox.x][secondBox.y]!
         
-        secondBoxNode.texture = SKTexture.init(imageNamed: ImageAssociation.getImageValue(value: secondBox.number))
         
         movementAnimation(boxNode: firstBoxNode, to: secondBox.x, to: secondBox.y, completionHandler: {
             
             firstBoxNode.run(SKAction.fadeOut(withDuration: self.kAnimationDuration), completion: {
             
                 firstBoxNode.removeFromParent()
+                
+                secondBoxNode.texture = SKTexture.init(imageNamed: ImageAssociation.getImageValue(value: secondBox.number))
+                secondBoxNode.physicsBody?.applyImpulse(CGVector.init(dx: 1.0, dy: 1.0))
             })
         })
     }
@@ -173,7 +176,6 @@ class GameScene: SKScene, GridDelegate {
         grid = Grid()
         grid?.randomBoxGenerator = randomBoxGenerator
         grid?.setup()
-        gridView?.texture = SKTexture.init(imageNamed: ImageAssociation.getImageValue(value: 11))
     }
     
     func selectQueueAndRun(_ queue: DispatchQueue, action: @escaping () -> ()) {
